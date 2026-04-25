@@ -1,0 +1,42 @@
+extends ../layouts/user
+
+block title
+    div.d-flex.p-3
+        a.btn.btn-secondary.btn-sm.ms-auto(href="/user/accounts/create")
+            i.bi.bi-plus
+                span="Create Account"
+                
+    div.p-3.pb-md-4.mx-auto.text-center
+        h1.display-4.fw-normal List Accounts
+
+block content
+    table.table.table-striped
+        thead
+            tr
+                th Account Number
+                th Account Name
+                th Account Type
+                th Address
+                th Phone Number
+                th Balance
+                th Status
+                th Created At
+        tbody
+            each account in data.accounts
+                tr
+                    td= account.account_no
+                    td= account.account_name
+                    td= account.account_type
+                    td= account.address
+                    td= account.phone_number
+                    td $#{account.balance.toFixed(2)}
+                    td= account.status
+                    td= new Date(account.created_at).toLocaleString()
+                    td
+                        a.btn.btn-primary.btn-sm(href=`/user/accounts/${account._id}`)
+                            i.bi.bi-info-circle
+                            span=" Detail"
+                    td
+                        a.btn.btn-warning.btn-sm(href=`/user/accounts/${account._id}/edit`)
+                            i.bi.bi-pencil
+                            span=" Edit"

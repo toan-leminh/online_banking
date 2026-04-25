@@ -1,0 +1,55 @@
+extends ../layouts/user
+
+block title
+    div.d-flex.p-3
+        a.btn.btn-secondary.btn-sm(href="/user/transactions")
+            i.bi.bi-arrow-left Back to Transactions
+
+    div.p-3.pb-md-4.mx-auto.text-center
+        h1.display-4.fw-normal Create Transaction
+
+block content
+    if errors.general
+        div.alert.alert-danger(role="alert")
+            span= errors.general
+
+    form(action="/user/transactions/create", method="POST")
+        input(type="hidden" name="_csrf" value=csrfToken)  
+        div.mb-3
+            label(for="account_name") From Account
+            select.form-select(name="from_account" class=(errors.from_account ? 'is-invalid' : ''))
+                option(value="" disabled selected) Select from account
+                each account in data.accounts
+                    option(value=account._id selected=(data.from_account === account._id)) #{account.account_name} (#{account.account_no})
+            if errors.from_account
+                div.invalid-feedback #{errors.from_account}
+
+        div.mb-3
+            label(for="account_type") To Account
+            select.form-select(name="to_account" class=(errors.to_account ? 'is-invalid' : ''))
+                option(value="" disabled selected) Select to account
+                each account in data.accounts
+                    option(value=account._id selected=(data.to_account === account._id)) #{account.account_name} (#{account.account_no})
+            if errors.to_account
+                div.invalid-feedback #{errors.to_account}
+        div.mb-3
+            label(for="transaction_type") Transaction Type
+            select.form-select(name="transaction_type" class=(errors.transaction_type ? 'is-invalid' : ''))
+                option(value="" disabled selected) Select transaction type
+                option(value="Transfer" selected=(data.transaction_type === 'Transfer')) Transfer
+                option(value="Debit" selected=(data.transaction_type === 'Debit')) Debit
+                option(value="Credit" selected=(data.transaction_type === 'Credit')) Credit
+            if errors.transaction_type
+                div.invalid-feedback #{errors.transaction_type}
+        div.mb-3
+            label(for="description") Description
+            textarea.form-control(name="description" rows="3" class=(errors.description ? 'is-invalid' : ''))= data.description || ''
+            if errors.description
+                div.invalid-feedback #{errors.description}
+        div.mb-3
+            label(for="address") Amount
+            input.form-control(name="amount", value=(data.amount || ''), class=(errors.amount ? 'is-invalid' : ''))
+            if errors.amount
+                div.invalid-feedback #{errors.amount}
+        
+        button.btn.btn-primary(type="submit") Create Transaction

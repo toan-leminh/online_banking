@@ -8,6 +8,10 @@ block title
         h1.display-4.fw-normal Login
 
 block content
+    if errors.general
+        div.alert.alert-danger(role="alert")
+            span = errors.general
+
     form(action="/login", method="POST")
         input(type="hidden" name="_csrf" value=csrfToken)  
         div.mb-3
@@ -22,3 +26,5 @@ block content
             input.form-control(name="password" type="password" class=(errors.password ? 'is-invalid' : ''))
             if errors.password
                 div.invalid-feedback #{errors.password}
+
+        button.btn.btn-primary(type="submit") Login

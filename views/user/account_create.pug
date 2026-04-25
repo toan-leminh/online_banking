@@ -1,0 +1,49 @@
+extends ../layouts/user
+
+block title
+    div.d-flex.p-3
+        a.btn.btn-secondary.btn-sm(href="/user/accounts")
+            i.bi.bi-arrow-left Back to Accounts
+
+        a.btn.btn-secondary.btn-sm.ms-auto(href="/user/transactions/create")
+            i.bi.bi-plus Create Transaction
+
+    div.p-3.pb-md-4.mx-auto.text-center
+        h1.display-4.fw-normal Create Account
+
+block content
+    if errors.general
+        div.alert.alert-danger(role="alert")
+            span = errors.general
+
+    form(action="/user/accounts/create", method="POST")
+        input(type="hidden" name="_csrf" value=csrfToken)  
+        div.mb-3
+            label(for="account_name") Account Name
+            input.form-control(name="account_name", value=(data.account_name || ''), class=(errors.account_name ? 'is-invalid' : ''))
+            if errors.account_name
+                div.invalid-feedback #{errors.account_name}
+
+        div.mb-3
+            label(for="account_type") Account Type
+            select.form-select(name="account_type" class=(errors.account_type ? 'is-invalid' : ''))
+                option(value="" disabled selected) Select account type
+                option(value="savings" selected=(data.account_type === 'savings')) Savings
+                option(value="checking" selected=(data.account_type === 'checking')) Checking
+            if errors.account_type
+                div.invalid-feedback #{errors.account_type}
+
+        div.mb-3
+            label(for="address") Address
+            input.form-control(name="address", value=(data.address || ''), class=(errors.address ? 'is-invalid' : ''))
+            if errors.address
+                div.invalid-feedback #{errors.address}
+
+        div.mb-3
+            label(for="phone_number") Phone Number
+            input.form-control(name="phone_number", value=(data.phone_number || ''), class=(errors.phone_number ? 'is-invalid' : ''))
+            if errors.phone_number
+                div.invalid-feedback #{errors.phone_number}
+        
+
+        button.btn.btn-primary(type="submit") Create Account

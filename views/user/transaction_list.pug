@@ -1,0 +1,30 @@
+extends ../layouts/user
+
+block title
+    div.d-flex.p-3
+        a.btn.btn-secondary.btn-sm.ms-auto(href="/user/transactions/create")
+            i.bi.bi-plus
+                span="Create Transaction"
+                
+    div.p-3.pb-md-4.mx-auto.text-center
+        h1.display-4.fw-normal List Transactions
+
+block content
+    table.table.table-striped
+        thead
+            tr
+                th From Account
+                th To Account
+                th Amount
+                th Transaction Type
+                th Description
+                th Created At
+        tbody
+            each transaction in data.transactions
+                tr
+                    td= transaction.from_account_no
+                    td= transaction.to_account_no
+                    td $#{transaction.amount.toFixed(2)}
+                    td= transaction.transaction_type
+                    td= transaction.description
+                    td= new Date(transaction.created_at).toLocaleString()

@@ -1,0 +1,68 @@
+extends ../layouts/user
+
+block title
+    div.d-flex.p-3
+        a.btn.btn-secondary.btn-sm.mb-3(href="/user/accounts")
+            i.bi.bi-arrow-left Back to Accounts
+
+    div.p-3.pb-md-4.mx-auto.text-center
+        h1.display-4.fw-normal Account Detail
+
+block content
+    if errors.general
+        div.alert.alert-danger(role="alert")
+            span = errors.general
+    div.card.mb-4
+        div.card-header
+            h5.mb-0= 'Details'
+        div.card-body
+            dl.row
+                dt.col-sm-3 Account Number
+                dd.col-sm-9= data.account.account_no
+            dl.row
+                dt.col-sm-3 Account Name
+                dd.col-sm-9= data.account.account_name
+            dl.row
+                dt.col-sm-3 Account Type
+                dd.col-sm-9= data.account.account_type
+            dl.row
+                dt.col-sm-3 Address
+                dd.col-sm-9= data.account.address
+            dl.row
+                dt.col-sm-3 Phone Number
+                dd.col-sm-9= data.account.phone_number
+            dl.row
+                dt.col-sm-3 Balance
+                dd.col-sm-9 $#{data.account.balance.toFixed(2)}
+            dl.row
+                dt.col-sm-3 Status
+                dd.col-sm-9= data.account.status
+            dl.row
+                dt.col-sm-3 Created At
+                dd.col-sm-9= new Date(data.account.created_at).toLocaleString()
+    div.card
+        div.card-header
+            h5.mb-0 Transactions
+        div.card-body
+            if data.transactions.length === 0
+                p No transactions found for this account.
+            else
+                table.table.table-striped
+                    thead
+                        tr
+                            th From Account
+                            th To Account
+                            th Date
+                            th Type
+                            th Amount
+                            th Description
+                    tbody
+                        each transaction in data.transactions
+                            tr
+                                td= transaction.from_account_no
+                                td= transaction.to_account_no
+                                td= new Date(transaction.date).toLocaleString()
+                                td= transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)
+                                td $#{transaction.amount.toFixed(2)}
+                                td= transaction.description
+        

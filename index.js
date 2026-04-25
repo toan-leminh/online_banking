@@ -4,9 +4,11 @@ const mongoose = require('mongoose');
 const path = require('path');
 const userRoutes = require('./routes/user.routes')
 const adminRoutes = require('./routes/admin.routes');
-const homeRouter = require('./routes/home.routes');
+const mainRoutes = require('./routes/main.routes');
 const session = require('express-session');
 const { generateToken } = require("./config/csrf-config");
+const passport = require('./config/passport-config');
+const flash = require('connect-flash');
 
 // Database
 const dbURI = process.env.MONGO_URI;
@@ -41,10 +43,18 @@ app.use((req, res, next) => {
     }    
     next();
 });
-
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(flash());
+app.use((req, res, next) => {
+    res.locals.currentUser = req.user || null; // Make user info available in all views
+    res.locals.success_msg = req.flash('success'); // Make success messages available in all views
+    res.locals.error_msg = req.flash('error');  // Make error messages available in all views
+    next();
+});
 
 // Route configuration
-app.use('/', homeRouter);
+app.use('/', mainRoutes);
 app.use('/user', userRoutes);
 app.use('/admin', adminRoutes);
 

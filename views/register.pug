@@ -9,6 +9,10 @@ block title
         p.fs-5.text-muted Create an User
 
 block content
+    if errors.general
+        div.alert.alert-danger(role="alert")
+            span= errors.general
+
     form(action="/register", method="POST")
         input(type="hidden" name="_csrf" value=csrfToken)
         div.mb-3

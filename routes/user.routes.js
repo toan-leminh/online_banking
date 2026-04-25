@@ -1,18 +1,23 @@
 const express = require("express");
 const router = express.Router();
-const mainController = require('../controllers/MainController')
-const authController = require('../controllers/AuthController')
+const accountController = require('../controllers/AccountController');
+const transactionController = require('../controllers/TransactionController');
+
+router.get("/accounts", accountController.listAccounts);
+router.get("/accounts/create", accountController.createAccount);
+router.post("/accounts/create", accountController.postCreateAccount);
+router.get("/accounts/:id", accountController.viewAccount);
+router.get("/accounts/:id/edit", accountController.editAccount);
+router.post("/accounts/:id/edit", accountController.postEditAccount);
+
+router.get("/transactions", transactionController.listTransactions);
+router.get("/transactions/create", transactionController.createTransaction);
+router.post("/transactions/create", transactionController.postCreateTransaction);
 
 
-
-router.get("/landing", mainController.landing);
-router.get("/register", mainController.register);
-router.post("/register", mainController.postRegister);
-router.post("/register/success", mainController.registerSuccess);
-router.get("/login", authController.login);
-router.post("/login", authController.postLogin);
-
-
+// router.get("/register", userController.register);
+// router.post("/register", userController.postRegister);
+// router.get("/register/success", userController.registerSuccess);
 // router.post("/add-new-user", userController.addUser);
 // router.get("/user-list", userController.getAllUsers);
 
