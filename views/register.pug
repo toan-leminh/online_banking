@@ -1,0 +1,39 @@
+extends layouts/main
+
+block title
+    div.d-flex.p-3
+        a.btn.btn-secondary.btn-sm.mb-3
+            i.bi.bi-arrow-left Back to Landing
+    div.p-3.pb-md-4.mx-auto.text-center
+        h1.display-4.fw-normal Register User
+        p.fs-5.text-muted Create an User
+
+block content
+    form(action="/register", method="POST")
+        input(type="hidden" name="_csrf" value=csrfToken)
+        div.mb-3
+            label Name
+            input(type="text").form-control(name="name" value=(data.name || '') class=(errors.name ? 'is-invalid' : ''))
+            if errors.name
+                div.invalid-feedback #{errors.name}
+  
+        div.mb-3
+            label(for="username") Username
+            input.form-control(name="username", value=(data.username || ''), class=(errors.username ? 'is-invalid' : ''))
+            if errors.username
+                div.invalid-feedback #{errors.username}
+
+        // Password field
+        div.mb-3
+            label.form-label Password
+            input.form-control(name="password" type="password" class=(errors.password ? 'is-invalid' : ''))
+            if errors.password
+                div.invalid-feedback #{errors.password}
+        // Conffirm password
+        div.mb-3
+            label.form-label Re-enter password
+            input.form-control(name="confirm_password" type="password" class=(errors.confirm_password ? 'is-invalid' : ''))
+            if errors.confirm_password
+                div.invalid-feedback #{errors.confirm_password}
+
+        button.btn.btn-primary(type="submit") Submit
