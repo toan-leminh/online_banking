@@ -1,0 +1,11 @@
+# Database config
+MONGO_URI=mongodb.net/?appName=Cluster0
+
+# Server config
+SERVER_PORT=3000
+
+# Session
+SESSION_SECRET="SAMPLE_SESSION_SECRET_KEY"
+SESSION_TIMEOUT=3600000
+
+
