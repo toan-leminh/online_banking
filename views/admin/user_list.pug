@@ -1,0 +1,28 @@
+extends ../layouts/admin
+
+block title
+    div.d-flex.p-3
+
+    div.p-3.pb-md-4.mx-auto.text-center
+        h1.display-4.fw-normal User List
+
+block content
+    table.table.table-striped
+        thead
+            tr
+                th Name
+                th Username
+                th isAdmin
+                th Status
+                th Created At
+                th Actions
+        tbody
+            each user in data.users
+                tr
+                    td= user.name 
+                    td= user.username
+                    td= user.is_admin
+                    td= user.status
+                    td= new Date(user.created_at).toLocaleString()
+                    td
+                        a.btn.btn-sm.btn-outline-primary(href=`/admin/users/${user._id}/edit`) Edit

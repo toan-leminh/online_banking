@@ -10,7 +10,55 @@ block title
         h1.display-4.fw-normal List Transactions
 
 block content
-    table.table.table-striped
+   
+    form(method="GET" action="/user/transactions")
+        div.mb-3
+            label Account Number
+            select.form-select(name="account_no" class=(errors.account_no ? 'is-invalid' : ''))
+                option(value="" selected) Select Account
+                each account in data.accounts
+                    option(value=account.account_no selected=(data.account_no == account.account_no)) #{account.account_name} (#{account.account_no})
+            if errors.account_no
+                div.invalid-feedback #{errors.account_no}
+        div.mb-3
+            label Description
+            input.form-control.me-2(type="text" name="description" placeholder="Search by description" value=(data.description || '') class=(errors.description ? 'is-invalid' : ''))
+            if errors.description
+                div.invalid-feedback #{errors.description}
+        div.mb-3
+            label Transaction Type
+            select.form-select(name="transaction_type" class=(errors.transaction_type ? 'is-invalid' : ''))
+                option(value="" selected) Select TransactionType
+                option(value="Transfer" selected=(data.transaction_type == 'Transfer')) Transfer
+                option(value="Debit" selected=(data.transaction_type == 'Debit')) Debit
+                option(value="Credit" selected=(data.transaction_type == 'Credit')) Credit
+            if errors.transaction_type
+                div.invalid-feedback #{errors.transaction_type}
+
+        div.mb-3
+            label Amount
+            div.d-flex.gap-2
+                input.form-control(type="number" step="0.01" name="min_amount" placeholder="Min Amount" value=(data.min_amount || '') class=(errors.min_amount ? 'is-invalid' : ''))
+                span.mx-2 〜
+                input.form-control(type="number" step="0.01" name="max_amount" placeholder="Max Amount" value=(data.max_amount || '') class=(errors.max_amount ? 'is-invalid' : ''))
+                if errors.min_amount
+                    div.invalid-feedback #{errors.min_amount}
+                if errors.max_amount
+                    div.invalid-feedback #{errors.max_amount}
+        div.mb-3
+            label Date Range
+            div.d-flex.gap-2
+                input.form-control(type="date" name="from_date" value=(data.from_date || '') class=(errors.from_date ? 'is-invalid' : ''))
+                if errors.from_date
+                    div.invalid-feedback #{errors.from_date}
+                span.mx-2 〜
+                input.form-control(type="date" name="to_date" value=(data.to_date || '') class=(errors.to_date ? 'is-invalid' : ''))
+                if errors.to_date
+                    div.invalid-feedback #{errors.to_date}
+        div.mb-3.d-flex.justify-content-center
+            button.btn.btn-outline-primary(type="submit") Search
+
+    table.table.table-striped.table-bordered
         thead
             tr
                 th From Account

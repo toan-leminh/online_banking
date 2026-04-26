@@ -6,7 +6,8 @@ const userSchema = new mongoose.Schema({
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     is_admin: { type: Boolean, required: true, default: false},
-    is_activate: { type: Boolean, required: true, default: false}
+    status: { type: String, enum: ['Active', 'Inactive'], default: 'Active' },
+    created_at: { type: Date, default: Date.now },
 });
 
 // Middleware encrypt password before save  with bscrypt

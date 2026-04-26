@@ -1,0 +1,33 @@
+extends ../layouts/admin
+
+block title
+    div.d-flex.p-3
+
+    div.p-3.pb-md-4.mx-auto.text-center
+        h1.display-4.fw-normal Account List
+
+block content
+    table.table.table-striped
+        thead
+            tr
+                th Account No
+                th Account Name
+                th Account Type
+                th Created By
+                th Balance
+                th Status
+                th Created At
+                th Actions
+        tbody
+            each account in data.accounts
+                tr
+                    td= account.account_no
+                    td= account.account_name
+                    td= account.account_type
+                    td
+                        a(href=`/admin/users/${account.created_by._id}/edit`)= account.created_by.username
+                    td $#{account.balance.toFixed(2)}
+                    td= account.status
+                    td= new Date(account.created_at).toLocaleString()
+                    td
+                        a.btn.btn-sm.btn-outline-primary(href=`/admin/accounts/${account._id}/edit`) Edit

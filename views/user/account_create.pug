@@ -28,8 +28,9 @@ block content
             label(for="account_type") Account Type
             select.form-select(name="account_type" class=(errors.account_type ? 'is-invalid' : ''))
                 option(value="" disabled selected) Select account type
-                option(value="savings" selected=(data.account_type === 'savings')) Savings
-                option(value="checking" selected=(data.account_type === 'checking')) Checking
+                option(value="Saving" selected=(data.account_type === 'Saving')) Saving
+                option(value="Checking" selected=(data.account_type === 'Checking')) Checking
+                option(value="Business" selected=(data.account_type === 'Business')) Business
             if errors.account_type
                 div.invalid-feedback #{errors.account_type}
 

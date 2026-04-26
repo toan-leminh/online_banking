@@ -1,0 +1,63 @@
+extends ../layouts/admin
+
+block title
+    div.d-flex.p-3
+        a.btn.btn-secondary.btn-sm(href="/admin/accounts")
+            i.bi.bi-arrow-left Back to Accounts
+
+    div.p-3.pb-md-4.mx-auto.text-center
+        h1.display-4.fw-normal Edit Account
+
+block content
+    if errors.general
+        div.alert.alert-danger(role="alert")
+            span = errors.general
+
+    form(action="/admin/accounts/" + data.account._id + "/edit", method="POST")
+        input(type="hidden" name="_csrf" value=csrfToken)
+        div.mb-3
+            label(for="account_no") Account No
+            input.form-control(name="account_no", value=(data.account.account_no || ''), disabled)
+
+        div.mb-3
+            label(for="account_name") Account Name
+            input.form-control(name="account_name", value=(data.account.account_name || ''), class=(errors.account_name ? 'is-invalid' : ''), disabled)
+            if errors.account_name
+                div.invalid-feedback #{errors.account_name}
+
+        div.mb-3
+            label(for="address") Address
+            input.form-control(name="address", value=(data.account.address || ''), class=(errors.address ? 'is-invalid' : ''), disabled)
+            if errors.address
+                div.invalid-feedback #{errors.address}
+
+        div.mb-3
+            label(for="phone_number") Phone Number
+            input.form-control(name="phone_number", value=(data.account.phone_number || ''), class=(errors.phone_number ? 'is-invalid' : ''), disabled)
+            if errors.phone_number
+                div.invalid-feedback #{errors.phone_number}
+        div.mb-3
+            label(for="account_type") Account Type
+            select.form-select(name="account_type" class=(errors.account_type ? 'is-invalid' : ''), disabled)
+                option(value="" disabled selected) Select account type
+                option(value="Saving" selected=(data.account.account_type === 'Saving')) Saving
+                option(value="Checking" selected=(data.account.account_type === 'Checking')) Checking
+                option(value="Business" selected=(data.account.account_type === 'Business')) Business
+            if errors.account_type
+                div.invalid-feedback #{errors.account_type}
+        div.mb-3
+            label(for="amount") Balance
+            input.form-control(type="number" step="0.01" name="balance" value=(data.account.amount || '') class=(errors.balance ? 'is-invalid' : ''))
+            if errors.balance
+                div.invalid-feedback #{errors.balance}
+        
+        div.mb-3
+            label(for="status") Status
+            select.form-select(name="status" class=(errors.status ? 'is-invalid' : ''))
+                option(value="" disabled selected) Select status
+                option(value="Active" selected=(data.account.status === 'Active')) Active
+                option(value="Inactive" selected=(data.account.status === 'Inactive')) Inactive
+            if errors.status
+                div.invalid-feedback #{errors.status}                      
+        
+        button.btn.btn-primary(type="submit") Edit Account

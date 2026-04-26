@@ -7,7 +7,7 @@ const User = require('../models/UserModel');
 function configurePassport() {
   passport.use(new LocalStrategy({ usernameField: 'username' }, async (username, password, done) => {
     try {
-      const user = await User.findOne({ username });
+      const user = await User.findOne({ username, status: 'Active' });
       if (!user) return done(null, false, { message: 'User not found' });
       if (await bcrypt.compare(password, user.password)) return done(null, user);
       

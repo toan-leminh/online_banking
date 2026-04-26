@@ -13,15 +13,13 @@ html
             header
                 div.d-flex.flex-column.flex-md-row.align-items-center.pb-3.mb-4.border-bottom
                     a.d-flex.align-items-center.text-dark.text-decoration-none(href="/landing")
-                        span.fs-4 Online Banking - User
-                        if currentUser && currentUser.is_admin
-                            a.ms-4.py-2.text-dark.text-decoration-none(href="/admin/users") Switch to Admin View
-
+                        span.fs-4 Online Banking - Admin
+                        a.ms-4.py-2.text-dark.text-decoration-none(href="/user/accounts") Switch to User View
                 
                     nav.d-inline-flex.mt-2.me-4.mt-md-0.ms-md-auto
-                        a.me-4.py-2.text-dark.text-decoration-none(href="/user/accounts") Accounts
-                        a.me-4.py-2.text-dark.text-decoration-none(href="/user/transactions") Transactions
-                    
+                        a.me-4.py-2.text-dark.text-decoration-none(href="/admin/users") Users
+                        a.me-4.py-2.text-dark.text-decoration-none(href="/admin/accounts") Accounts
+                        a.me-4.py-2.text-dark.text-decoration-none(href="/admin/transactions") Transactions
                     <!-- Username and Logout-->
                     if currentUser
                         div.d-inline-flex.ms-md-3

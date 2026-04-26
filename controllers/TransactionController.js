@@ -6,12 +6,88 @@ exports.listTransactions = async (req, res) => {
     if(!req.user) {
         return res.redirect('/login');
     }
+    // Get all accounts
+    const accounts = await Account.find({ created_by: req.user._id, status: 'Active' }).lean();
+
+    const searchSchema = Joi.object({
+        account_no: Joi.string().optional().allow(''),
+        transaction_type: Joi.string().optional().allow(''),
+        description: Joi.string().optional().allow(''),
+        min_amount: Joi.number().positive().optional().allow(''),
+        max_amount: Joi.number().positive().optional().allow(''),
+        from_date: Joi.date().optional().allow(''),
+        to_date: Joi.date().optional().allow('') // Allow empty string for date fields,
+    });
+    
+    const { error, value } = searchSchema.validate(req.query, {abortEarly: false});
+    if (error) {
+        console.log("Validated error: ", error);
+        const errors = {};
+        error.details.forEach((detail) => {
+            errors[detail.path[0]] = detail.message;
+        });
+        transactions = [];
+        return res.status(400).render('user/transaction_list', {
+            errors: errors,
+            data: { ...req.query, accounts, transactions }, 
+        });
+    }
+
+    // Get all search parameters from query
+    const { account_no, transaction_type, description, min_amount, max_amount, from_date, to_date } = req.query;
+
+    // Check account_no belongs to the user
+    if (account_no) {
+        const account = accounts.find(acc => acc.account_no === account_no);
+        if (!account) {
+            return res.status(400).render('user/transaction_list', {
+                errors: { account_no: 'Invalid account number' },
+                data: { ...req.query, accounts }, 
+            });
+        }
+    }
+
+    // Build the query object based on search parameters
+    const query = { created_by: req.user._id };
+
+    if (account_no) {
+        query.$or = [
+            { from_account_no: account_no },
+            { to_account_no: account_no }
+        ];
+    }
+
+    if (transaction_type) {
+        query.transaction_type = transaction_type;
+    }
+
+    if (description) {
+        query.description = { $regex: description, $options: 'i' }; // Partial match (regex), case-insensitive(i)
+    }
+
+    if (min_amount) {
+        query.amount = { ...query.amount, $gte: parseFloat(min_amount) };
+    }
+
+    if (max_amount) {
+        query.amount = { ...query.amount, $lte: parseFloat(max_amount) };
+    }
+
+    if (from_date) {
+        query.created_at = { ...query.created_at, $gte: new Date(from_date) };
+    }
+
+    if (to_date) {
+        toDate = new Date(to_date);
+        toDate.setDate(toDate.getDate() + 1); // Add 1 day to include the end date
+        query.created_at = { ...query.created_at, $lte: toDate };
+    }   
 
     try {
-        const transactions = await Transaction.find({ created_by: req.user._id }).lean();
+        const transactions = await Transaction.find(query).lean();
         res.render('user/transaction_list', {
             errors: {},
-            data: {transactions}, 
+            data: {...req.query, transactions, accounts}, 
         });
     } catch (e) {
         console.error("Error fetching transactions:", e);
@@ -46,7 +122,7 @@ exports.postCreateTransaction = async (req, res) => {
         from_account: Joi.string().required(),
         to_account: Joi.string().required().invalid(Joi.ref('from_account')).messages({
             'any.required': 'This field is required',
-            'any.invalid': 'To account must be different from from account',
+            'any.invalid': 'To account must be different from From account',
         }),
         amount: Joi.number().positive().required(),
         transaction_type: Joi.string().valid('Transfer', 'Debit', 'Credit').required(),

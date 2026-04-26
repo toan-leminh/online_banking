@@ -1,0 +1,45 @@
+extends ../layouts/admin
+
+block title
+    div.d-flex.p-3
+        a.btn.btn-secondary.btn-sm(href="/admin/users")
+            i.bi.bi-arrow-left Back to Users
+
+    div.p-3.pb-md-4.mx-auto.text-center
+        h1.display-4.fw-normal Edit User
+
+block content
+    if errors.general
+        div.alert.alert-danger(role="alert")
+            span = errors.general
+
+    form(action="/admin/users/" + data.user._id + "/edit", method="POST")
+        input(type="hidden" name="_csrf" value=csrfToken)
+        div.mb-3
+            label(for="name") Name
+            input.form-control(name="name", value=(data.user.name || ''), disabled)
+
+        div.mb-3
+            label(for="username") Username
+            input.form-control(name="username", value=(data.user.username || ''), class=(errors.username ? 'is-invalid' : ''), disabled)
+            if errors.username
+                div.invalid-feedback #{errors.username}
+
+        div.mb-3
+            label(for="is_admin") Admin Status
+            select.form-select(name="is_admin", class=(errors.is_admin ? 'is-invalid' : ''))
+                option(value="" disabled selected) Select admin status
+                option(value="true" selected=(data.user.is_admin === true)) Yes
+                option(value="false" selected=(data.user.is_admin === false)) No
+            if errors.is_admin
+                div.invalid-feedback #{errors.is_admin}
+        div.mb-3
+            label(for="status") Status
+            select.form-select(name="status" class=(errors.status ? 'is-invalid' : ''))
+                option(value="" disabled selected) Select status
+                option(value="Active" selected=(data.user.status === 'Active')) Active
+                option(value="Inactive" selected=(data.user.status === 'Inactive')) Inactive
+            if errors.status
+                div.invalid-feedback #{errors.status}                      
+        
+        button.btn.btn-primary(type="submit") Edit Account

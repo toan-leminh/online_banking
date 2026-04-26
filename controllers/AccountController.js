@@ -40,7 +40,7 @@ exports.postCreateAccount = async (req, res) => {
         account_name: Joi.string().required().messages({
             'any.required': 'This field is required',
         }),
-        account_type: Joi.string().valid('savings', 'checking').required().messages({
+        account_type: Joi.string().valid('Saving', 'Checking', 'Business').required().messages({
             'any.required': 'This field is required',
             'any.only': 'Invalid account type',
         }),
@@ -61,7 +61,7 @@ exports.postCreateAccount = async (req, res) => {
             errors[detail.path[0]] = detail.message;
         });
 
-        return res.render('user/accounts/create', {
+        return res.render('user/account_create', {
             errors,
             data: req.body,
         });
