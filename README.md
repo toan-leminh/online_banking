@@ -1,7 +1,6 @@
-# Campus Event Project
-Sample project using Nodejs Express for learning purpose.
-Online Banking Website that allows users to register, log in, create and manage multiple bank accounts, perform simulated transactions, view transaction history, and search transaction records. 
-Inlude function below:
+# Online Banking Project
+Online Banking Website that allows users to register, log in, create and manage multiple bank accounts, perform simulated transactions, view transaction history, and search transaction records. <br>
+Sample project using Nodejs Express for learning purpose, inlude function below:
 - Basic usage of Model, View, Template (Pug)
 - Use @hapi/joi for validation
 - Use passport.js for authentication  (Local Strategy)
@@ -65,7 +64,7 @@ online_banking/
 ```
 
 ## Setup 
-Install Nodejs
+Install Nodejs.<br>
 Once nodejs is installed, you can install the required dependencies.
 
 ```
