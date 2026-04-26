@@ -39,16 +39,20 @@ exports.postCreateAccount = async (req, res) => {
         _csrf: Joi.string().required(),
         account_name: Joi.string().required().messages({
             'any.required': 'This field is required',
+            'string.empty': 'This field is required',
         }),
         account_type: Joi.string().valid('Saving', 'Checking', 'Business').required().messages({
             'any.required': 'This field is required',
+            'string.empty': 'This field is required',
             'any.only': 'Invalid account type',
         }),
         address: Joi.string().required().messages({
             'any.required': 'This field is required',
+            'string.empty': 'This field is required',
         }),
         phone_number: Joi.string().pattern(/^[0-9]{10}$/).required().messages({
             'any.required': 'This field is required',
+            'string.empty': 'This field is required',
             'string.pattern.base': 'Invalid phone number format',
         }),
     });

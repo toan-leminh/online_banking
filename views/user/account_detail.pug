@@ -45,7 +45,7 @@ block content
             h5.mb-0 Transactions
         div.card-body
             if data.transactions.length === 0
-                p No transactions found for this account.
+                p No transactions.
             else
                 table.table.table-striped
                     thead
@@ -61,8 +61,8 @@ block content
                             tr
                                 td= transaction.from_account_no
                                 td= transaction.to_account_no
-                                td= new Date(transaction.date).toLocaleString()
-                                td= transaction.type.charAt(0).toUpperCase() + transaction.type.slice(1)
+                                td= new Date(transaction.created_at).toLocaleString()
+                                td= transaction.transaction_type
                                 td $#{transaction.amount.toFixed(2)}
                                 td= transaction.description
         

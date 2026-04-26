@@ -119,18 +119,32 @@ exports.postCreateTransaction = async (req, res) => {
 
     const schema = Joi.object({
         _csrf: Joi.string().required(),
-        from_account: Joi.string().required(),
+        from_account: Joi.string().required().messages({
+            'any.required': 'This field is required',
+            'string.empty': 'This field is required',
+        }),
         to_account: Joi.string().required().invalid(Joi.ref('from_account')).messages({
             'any.required': 'This field is required',
+            'any.empty': 'This field is required',
             'any.invalid': 'To account must be different from From account',
         }),
-        amount: Joi.number().positive().required(),
-        transaction_type: Joi.string().valid('Transfer', 'Debit', 'Credit').required(),
-        description: Joi.string().allow('')
+        amount: Joi.number().positive().required().messages({
+            'any.required': 'This field is required',
+            'any.empty': 'This field is required',
+            'number.base': 'Amount must be a number',
+            'number.positive': 'Amount must be greater than zero',
+        }),
+        transaction_type: Joi.string().valid('Transfer', 'Debit', 'Credit').required().messages({
+            'any.required': 'This field is required',
+            'string.empty': 'This field is required',
+        }),
+        description: Joi.string().allow('').messages({
+            'string.empty': 'This field is required',
+        })
     });
 
     try {
-        const { error, value } = schema.validate(req.body);
+        const { error, value } = schema.validate(req.body, {abortEarly: false});
         if (error) {
             const accounts = await Account.find({ created_by: req.user._id, status: 'Active' }).lean();
 

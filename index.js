@@ -6,8 +6,8 @@ const userRoutes = require('./routes/user.routes')
 const adminRoutes = require('./routes/admin.routes');
 const mainRoutes = require('./routes/main.routes');
 const session = require('express-session');
-const { generateToken } = require("./config/csrf-config");
-const passport = require('./config/passport-config');
+const { generateToken } = require("./config/csrf.config");
+const passport = require('./config/passport.config');
 const flash = require('connect-flash');
 
 // Database

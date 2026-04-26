@@ -1,5 +1,5 @@
 const Joi = require('@hapi/joi');
-const { csrfSynchronizedProtection } = require("../config/csrf-config");
+const { csrfSynchronizedProtection } = require("../config/csrf.config");
 const UserModel = require("../models/UserModel")
 
 // Landing page

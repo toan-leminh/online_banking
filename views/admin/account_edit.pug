@@ -40,14 +40,14 @@ block content
             label(for="account_type") Account Type
             select.form-select(name="account_type" class=(errors.account_type ? 'is-invalid' : ''), disabled)
                 option(value="" disabled selected) Select account type
-                option(value="Saving" selected=(data.account.account_type === 'Saving')) Saving
-                option(value="Checking" selected=(data.account.account_type === 'Checking')) Checking
-                option(value="Business" selected=(data.account.account_type === 'Business')) Business
+                option(value="Saving" selected=(data.account.account_type == 'Saving')) Saving
+                option(value="Checking" selected=(data.account.account_type == 'Checking')) Checking
+                option(value="Business" selected=(data.account.account_type == 'Business')) Business
             if errors.account_type
                 div.invalid-feedback #{errors.account_type}
         div.mb-3
             label(for="amount") Balance
-            input.form-control(type="number" step="0.01" name="balance" value=(data.account.amount || '') class=(errors.balance ? 'is-invalid' : ''))
+            input.form-control(type="number" step="0.01" name="balance" value=(data.account.balance || '') class=(errors.balance ? 'is-invalid' : ''))
             if errors.balance
                 div.invalid-feedback #{errors.balance}
         
